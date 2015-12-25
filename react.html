@@ -1,0 +1,144 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Coding a Clean and Professional Web Design in Photoshop</title>
+<link href="css/styles.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<span id="react-root"></span>
+<script src="react.js"></script>
+<script src="react-dom.js"></script>
+
+<script>
+    var Container = React.createClass({
+        getInitialState: function() {
+            return {tabData: this.props.tabData, 
+                    titleData: this.props.titleData, 
+                    contentBoxes: this.props.contentBoxes};
+        },
+        tabAdd: function(evt) {
+            this.state.tabData.push({title: 'ABOUT', url: 'http://www.kimo.com.tw/'});
+            this.setState({tabData: this.state.tabData});
+        },
+
+        handleClick: function(evt) {
+            this.state.tabData.push({title: 'ABOUT', url: 'http://www.kimo.com.tw/'});
+            this.setState({tabData: this.state.tabData});
+        },
+
+        render: function() {
+            return  React.createElement('div', {id: 'container'},
+                        React.createElement(Header, {data: this.state.titleData}),
+                        React.createElement(TabSelector, {tabData: this.state.tabData}),
+                        React.createElement('div', {id: 'featured'}, 
+                            React.createElement(MainPic, null),
+                            React.createElement(MainForm, null)
+                        ),
+                        React.createElement('div', {id: 'content'}, 
+                            React.createElement(ContentBox, {contentBoxes: this.state.contentBoxes, onClick: this.tabAdd})
+                        )
+
+                );
+        }
+    });
+
+    var Header = React.createClass({
+        render: function() {
+            return React.createElement('div', {id: 'header'},
+                    React.createElement('h1', null, 
+                        React.createElement('a', {href: '#'}, 'Smashing Dzine')
+                    ),
+                    React.createElement('div', {id: 'phone'}, 
+                        React.createElement('p', null, this.props.data.tel),
+                        React.createElement('h6', null, this.props.data.desc)
+                    )
+                );
+        }
+    });
+
+    var TabSelector = React.createClass({
+        render: function() {
+            var tabs = this.props.tabData.map(function(item, i) {
+                var cssName = item.cssName != undefined ? item.cssName : '';
+                return React.createElement('li', {className: item.cssName, key: i}, 
+                        React.createElement('a', {href: item.url}, 
+                            React.createElement('span', null, item.title)
+                        )
+                    );
+            }, this);
+            
+            return React.createElement('div', {id: 'nav'}, 
+                    React.createElement('ul', null, tabs)
+                );
+        }
+    });
+
+    var MainPic = React.createClass({
+        render: function() {
+            return React.createElement('ul', null, 
+                    React.createElement('li', {className: 'ss1'}, 
+                        React.createElement('a', {href: '#'}, 'Heading for Project')
+                    )
+                );
+        }
+    }); 
+
+    var MainForm = React.createClass({
+        render: function() {
+            return React.createElement('form', {id: 'quote', action: '#', method:'post'}, 
+                    React.createElement('h2', null, 'Quick Quote'), 
+                    React.createElement('label', null, 'Your Full Name:'),
+                    React.createElement('input', {type: 'text', name: 'Full Name'}),
+                    React.createElement('label', null, 'Your Email:'),
+                    React.createElement('input', {type: 'text', name:"Email"}),
+                    React.createElement('label', null, 'What Are You Looking For:'),
+                    React.createElement('textarea', {cols: 35, rows:2}),
+                    React.createElement('input', {className: 'btn', type: 'image', src: 'images/submit_btn.jpg'})
+                );
+        }
+    });
+
+    var ContentBox = React.createClass({
+        render: function() {
+            var boxes = this.props.contentBoxes.map(function(item, i) {
+                return React.createElement('div', {className: item.cssClass, key: i}, 
+                        React.createElement('h2', {onClick: this.props.onClick}, item.title),
+                        React.createElement('img', {src: item.img, alt: 'About Smashing Dzine'}),
+                        React.createElement('p', null, item.desc),
+                        React.createElement('a', {href: item.url, className: 'readmore'}, 'Read More')
+                    );
+            }, this);
+           
+            return React.createElement('div', null, boxes);
+        }
+    });
+
+    var tabData = [
+        {title: 'HOME', url: 'http://www.kimo.com.tw/', cssName: "active"},
+        {title: 'ABOUT', url: 'http://www.kimo.com.tw/'},
+        {title: 'SERVICES', url: 'http://www.kimo.com.tw/'},
+        {title: 'PRODUCTS', url: 'http://www.kimo.com.tw/'},
+        {title: 'BLOG', url: 'http://www.kimo.com.tw/'},
+        {title: 'CONTACT US', url: 'http://www.kimo.com.tw/'}
+    ];
+
+    var titleData = {tel: '87976373', desc: 'call 我'};
+    var contentBoxes = [
+        {title: 'Click Me Add TAB', img: 'images/about_smashing_dzine.jpg', 
+            desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ut dui nec nisl fringilla vestibulum vel vitae risus.', url: '#', cssClass: 'col'},
+        {title: 'Click Me Add TAB', img: 'images/about_smashing_dzine.jpg', 
+            desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ut dui nec nisl fringilla vestibulum vel vitae risus.', url: '#', cssClass: 'col noMargin'},
+        {title: 'Click Me Add TAB', img: 'images/about_smashing_dzine.jpg', 
+            desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ut dui nec nisl fringilla vestibulum vel vitae risus.', url: '#', cssClass: 'col no Margin fr'}
+    ];
+
+    var containerFactory = React.createFactory(Container);
+    var container = containerFactory({tabData: tabData, titleData: titleData, contentBoxes: contentBoxes});
+    ReactDOM.render(
+        React.createElement(Container, {tabData: tabData, titleData: titleData, contentBoxes: contentBoxes}), 
+        document.getElementById("react-root")
+    );
+</script>
+</body>
+
+</html>
